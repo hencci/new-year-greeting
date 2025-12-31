@@ -8,7 +8,7 @@ export default function NameSequence({ names, onComplete }) {
     if (index < names.length) {
       const timer = setTimeout(() => {
         setIndex((prev) => prev + 1);
-      }, 4000);
+      }, 4100);
       return () => clearTimeout(timer);
     } else {
       onComplete();

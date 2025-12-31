@@ -8,13 +8,28 @@ import MusicPlayer from "./MusicPlayer.jsx";
 export default function GreetingCard() {
   const [hasStarted, setHasStarted] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
+  const [canReplay, setCanReplay] = useState(false);
+  const [runId, setRunId] = useState(0);
+
   const fadeOutMusicRef = useRef(null);
 
   const handleFinalShown = () => {
     // ⏱️ End music 15s after animation ends
     setTimeout(() => {
       fadeOutMusicRef.current?.();
-    }, 25000);
+
+      // show replay AFTER fade-out completes
+      setTimeout(() => {
+        setCanReplay(true);
+      }, 3000);
+    }, 18000);
+  };
+
+  const handleReplay = () => {
+    setHasStarted(false);
+    setShowFinal(false);
+    setCanReplay(false);
+    setRunId((prev) => prev + 1); // 🔁 force remount
   };
 
   return (
@@ -37,11 +52,27 @@ export default function GreetingCard() {
       {hasStarted && showFinal && <FinalMessage onShown={handleFinalShown} />}
 
       {/* 🎵 Play Button */}
-      {!hasStarted && (
+      {!hasStarted && !canReplay && (
         <MusicPlayer
           onStart={() => setHasStarted(true)}
           registerFadeOut={(fn) => (fadeOutMusicRef.current = fn)}
         />
+      )}
+
+      {canReplay && (
+        <button
+          onClick={handleReplay}
+          className="
+            mt-6 w-[30%]
+            bg-yellow-400 hover:bg-yellow-500
+            text-black font-semibold
+            py-2 px-4
+            rounded-lg
+            transition
+          "
+        >
+          🔁 Replay
+        </button>
       )}
     </motion.div>
   );
