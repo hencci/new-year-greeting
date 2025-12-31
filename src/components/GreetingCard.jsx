@@ -3,6 +3,7 @@ import { useState } from "react";
 import NameSequence from "./NameSequence.jsx";
 import FinalMessage from "./FinalMessage.jsx";
 import { names } from "../data/names";
+import MusicPlayer from "./MusicPlayer.jsx";
 
 export default function GreetingCard() {
   const [showFinal, setShowFinal] = useState(false);
@@ -20,6 +21,8 @@ export default function GreetingCard() {
       ) : (
         <FinalMessage />
       )}
+
+      <MusicPlayer />
     </motion.div>
   );
 }
