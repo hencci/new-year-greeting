@@ -9,7 +9,7 @@ export default function GreetingCard() {
 
   return (
     <motion.div
-      className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 w-[90vw] max-w-md text-center h-[50vh]"
+      className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 w-[90vw] max-w-md text-center"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
     >
