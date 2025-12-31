@@ -1,15 +1,35 @@
 import { Howl } from "howler";
+import { useRef } from "react";
 import music from "../assets/music.mp3";
 
-export default function MusicPlayer({ onStart }) {
+export default function MusicPlayer({ onStart, registerFadeOut }) {
+  const soundRef = useRef(null);
+
   const startExperience = () => {
-    const sound = new Howl({
+    soundRef.current = new Howl({
       src: [music],
       volume: 0.5,
+      loop: true,
     });
 
-    sound.play();
-    onStart(); // Triggers animations
+    soundRef.current.play();
+
+    // Expose fade-out control to parent
+    registerFadeOut(() => {
+      if (!soundRef.current) return;
+
+      soundRef.current.fade(
+        soundRef.current.volume(),
+        0,
+        3000 // 3s fade-out
+      );
+
+      setTimeout(() => {
+        soundRef.current.stop();
+      }, 3000);
+    });
+
+    onStart();
   };
 
   return (

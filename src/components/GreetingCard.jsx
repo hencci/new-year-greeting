@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import NameSequence from "./NameSequence.jsx";
 import FinalMessage from "./FinalMessage.jsx";
 import { names } from "../data/names";
@@ -8,6 +8,14 @@ import MusicPlayer from "./MusicPlayer.jsx";
 export default function GreetingCard() {
   const [hasStarted, setHasStarted] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
+  const fadeOutMusicRef = useRef(null);
+
+  const handleFinalShown = () => {
+    // ⏱️ End music 15s after animation ends
+    setTimeout(() => {
+      fadeOutMusicRef.current?.();
+    }, 25000);
+  };
 
   return (
     <motion.div
@@ -26,10 +34,15 @@ export default function GreetingCard() {
         <NameSequence names={names} onComplete={() => setShowFinal(true)} />
       )}
 
-      {hasStarted && showFinal && <FinalMessage />}
+      {hasStarted && showFinal && <FinalMessage onShown={handleFinalShown} />}
 
       {/* 🎵 Play Button */}
-      {!hasStarted && <MusicPlayer onStart={() => setHasStarted(true)} />}
+      {!hasStarted && (
+        <MusicPlayer
+          onStart={() => setHasStarted(true)}
+          registerFadeOut={(fn) => (fadeOutMusicRef.current = fn)}
+        />
+      )}
     </motion.div>
   );
 }

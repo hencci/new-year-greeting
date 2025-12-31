@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
-export default function FinalMessage() {
+export default function FinalMessage({ onShown }) {
+  useEffect(() => {
+    onShown();
+  }, [onShown]);
+
   return (
     <motion.div
       className="text-center mt-6 px-2"
