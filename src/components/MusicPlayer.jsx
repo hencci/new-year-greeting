@@ -1,29 +1,27 @@
 import { Howl } from "howler";
-import { useState } from "react";
 import music from "../assets/music.mp3";
 
-export default function MusicPlayer() {
-  const [started, setStarted] = useState(false);
-
-  const startMusic = () => {
+export default function MusicPlayer({ onStart }) {
+  const startExperience = () => {
     const sound = new Howl({
       src: [music],
       volume: 0.5,
     });
-    sound.play();
-    setStarted(true);
-  };
 
-  if (started) return null;
+    sound.play();
+    onStart(); // Triggers animations
+  };
 
   return (
     <button
-      onClick={startMusic}
+      onClick={startExperience}
       className="
-        fixed bottom-4 right-4
+        mt-6
+        w-[20%]
         bg-white/20 backdrop-blur
         text-white px-4 py-2
-        rounded-full text-sm
+        rounded-lg text-sm
+        hover:bg-white/30 transition
       "
     >
       ▶ Play

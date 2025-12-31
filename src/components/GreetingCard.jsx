@@ -6,23 +6,30 @@ import { names } from "../data/names";
 import MusicPlayer from "./MusicPlayer.jsx";
 
 export default function GreetingCard() {
+  const [hasStarted, setHasStarted] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
 
   return (
     <motion.div
-      className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 w-[90vw] max-w-md text-center"
+      className="
+        bg-white/10 backdrop-blur-lg rounded-2xl
+        p-6 sm:p-8 md:p-10
+        w-[90vw] sm:w-[85vw] md:w-[70vw]
+        text-center
+      "
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
     >
       <h1 className="text-3xl font-bold text-white">🎆 HAPPY NEW YEAR 🎆</h1>
 
-      {!showFinal ? (
+      {hasStarted && !showFinal && (
         <NameSequence names={names} onComplete={() => setShowFinal(true)} />
-      ) : (
-        <FinalMessage />
       )}
 
-      <MusicPlayer />
+      {hasStarted && showFinal && <FinalMessage />}
+
+      {/* 🎵 Play Button */}
+      {!hasStarted && <MusicPlayer onStart={() => setHasStarted(true)} />}
     </motion.div>
   );
 }
